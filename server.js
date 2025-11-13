@@ -7,14 +7,11 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-// Servir arquivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Armazenar salas e usuários
 const rooms = new Map();
 const defaultRooms = ['Geral', 'Tecnologia', 'Esportes', 'Games', 'Musica'];
 
-// Inicializar salas padrão
 defaultRooms.forEach(room => {
     rooms.set(room, new Set());
 });
@@ -23,18 +20,14 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Eventos do Socket.IO
 io.on('connection', (socket) => {
     console.log('Novo usuário conectado:', socket.id);
 
-    // Enviar lista de salas disponíveis
     socket.emit('rooms_list', Array.from(rooms.keys()));
 
-    // Entrar em uma sala
     socket.on('join_room', (data) => {
         const { room, username } = data;
         
-        // Sair da sala anterior, se houver
         if (socket.room) {
             socket.leave(socket.room);
             const roomUsers = rooms.get(socket.room);
@@ -48,25 +41,21 @@ io.on('connection', (socket) => {
             }
         }
 
-        // Entrar na nova sala
         socket.join(room);
         socket.room = room;
         socket.username = username;
 
-        // Adicionar usuário à sala
         if (!rooms.has(room)) {
             rooms.set(room, new Set());
         }
         rooms.get(room).add(username);
 
-        // Notificar sala sobre novo usuário
         socket.to(room).emit('user_joined', {
             username,
             message: `${username} entrou na sala`,
             users: Array.from(rooms.get(room))
         });
 
-        // Enviar confirmação para o usuário
         socket.emit('room_joined', {
             room,
             username,
@@ -76,7 +65,6 @@ io.on('connection', (socket) => {
         console.log(`${username} entrou na sala ${room}`);
     });
 
-    // Enviar mensagem
     socket.on('send_message', (data) => {
         const { room, message } = data;
         const messageData = {
@@ -85,12 +73,10 @@ io.on('connection', (socket) => {
             timestamp: new Date().toLocaleTimeString()
         };
 
-        // Enviar mensagem para todos na sala
         io.to(room).emit('receive_message', messageData);
         console.log(`Mensagem em ${room}: ${socket.username}: ${message}`);
     });
 
-    // Sair da sala
     socket.on('leave_room', () => {
         if (socket.room) {
             const roomUsers = rooms.get(socket.room);
@@ -108,7 +94,6 @@ io.on('connection', (socket) => {
         }
     });
 
-    // Desconectar
     socket.on('disconnect', () => {
         if (socket.room) {
             const roomUsers = rooms.get(socket.room);
