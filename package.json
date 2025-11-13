@@ -1,5 +1,5 @@
 {
-  "name": "realtime-chat",
+  "name": "zap2",
   "version": "1.0.0",
   "description": "Sistema de chat em tempo real com salas",
   "main": "server.js",

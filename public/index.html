@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat em Tempo Real</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-comments"></i>
+                    <h1>ChatApp</h1>
+                </div>
+            </div>
+
+            <div id="login-section" class="sidebar-section active">
+                <div class="welcome-message">
+                    <h2>Bem-vindo!</h2>
+                    <p>Entre para começar a conversar</p>
+                </div>
+                
+                <div class="login-form">
+                    <div class="form-group">
+                        <label for="username">
+                            <i class="fas fa-user"></i>
+                            Seu Nome
+                        </label>
+                        <input type="text" id="username" placeholder="Digite seu nome" maxlength="20">
+                    </div>
+                    <button id="enter-chat" class="btn-primary">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Entrar no Chat
+                    </button>
+                </div>
+            </div>
+
+            <div id="chat-section" class="sidebar-section">
+                <div class="current-user-card">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="user-info">
+                        <span id="current-username" class="username">Usuário</span>
+                        <button id="logout" class="btn-logout">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="rooms-section">
+                    <div class="section-header">
+                        <i class="fas fa-hashtag"></i>
+                        <h3>Salas Disponíveis</h3>
+                    </div>
+                    <div id="rooms-list" class="rooms-list">
+                    </div>
+                </div>
+
+                <div class="users-section">
+                    <div class="section-header">
+                        <i class="fas fa-users"></i>
+                        <h3>Online na Sala</h3>
+                        <span id="online-count" class="online-count">0</span>
+                    </div>
+                    <div id="users-list" class="users-list">
+                        <div class="empty-state">
+                            <i class="fas fa-door-open"></i>
+                            <p>Entre em uma sala para ver os usuários</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div id="welcome-state" class="chat-welcome">
+                <div class="welcome-content">
+                    <div class="welcome-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h2>Bem-vindo ao ChatApp</h2>
+                    <p>Selecione uma sala à esquerda para começar a conversar</p>
+                </div>
+            </div>
+
+            <div id="chat-area" class="chat-area">
+                <div class="chat-header">
+                    <div class="room-info">
+                        <div class="room-icon">
+                            <i class="fas fa-hashtag"></i>
+                        </div>
+                        <div class="room-details">
+                            <h3 id="current-room">Nome da Sala</h3>
+                            <span id="room-topic">Conversa em tempo real</span>
+                        </div>
+                    </div>
+                    <div class="room-actions">
+                        <button id="leave-room" class="btn-secondary">
+                            <i class="fas fa-times"></i>
+                            Sair da Sala
+                        </button>
+                    </div>
+                </div>
+
+                <div class="chat-main">
+                    <div id="messages-container" class="messages-container">
+                        <div class="empty-chat">
+                            <i class="fas fa-comment-slash"></i>
+                            <p>Nenhuma mensagem ainda</p>
+                            <span>Seja o primeiro a enviar uma mensagem!</span>
+                        </div>
+                    </div>
+
+                    <div class="message-input-container">
+                        <div class="input-group">
+                            <input type="text" id="message-input" placeholder="Digite sua mensagem..." maxlength="500">
+                            <button id="send-button" class="btn-send">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
